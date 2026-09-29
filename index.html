@@ -10,7 +10,7 @@
 @media(max-width:420px){.inlineGuide ol{grid-template-columns:1fr}.modal{max-height:84vh;overflow:auto}.modalBackdrop{padding:12px}.mobileTop{height:66px}.main{padding-top:84px}}
 </style></head><body><div id="root"></div><script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script><script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script><script>const { useEffect, useMemo, useState } = React;
 const stageRank = { New: 0, Contacted: 1, Interested: 2, Consultation: 3, Proposal: 4, Won: 5 };
-function localDateISO(date = new Date()) { const y = date.getFullYear(); const m = String(date.getMonth() + 1).padStart(2, '0'); const d = String(date.getDate()).padStart(2, '0'); return `${y}-${m}-${d}`; }\nfunction addDaysISO(base, days) { const [y, m, d] = base.split('-').map(Number); const next = new Date(y, m - 1, d); next.setDate(next.getDate() + days); return localDateISO(next); }\nconst TODAY = localDateISO();
+const TODAY = '2026-09-28';
 const STORAGE_KEY = 'ojas-trial-v1';
 const INTERACTION_KEY = 'ojas-trial-interactions';
 const GUIDE_KEY = 'ojas-trial-guide-dismissed';
@@ -31,14 +31,14 @@ const seedLeads = [
         id: 'rohan', name: 'Rohan Kapoor', phone: '9000000044', property: 'Villa', area: '3,000 sq ft', budget: '₹30L+', location: 'Jubilee Hills', source: 'Referral', stage: 'Consultation', received: 'Sep 26, 11:22 AM', notes: [],
         activities: [{ id: 'r1', time: 'Sep 26', label: 'Enquiry received' }, { id: 'r2', time: 'Sep 27', label: 'Consultation booked' }], followUps: [], consultations: [{ id: 'c2', date: TODAY, time: '16:30', mode: 'Site visit', note: 'Villa scope discussion', completed: false }]
     },
-    { id: 'neha', name: 'Neha Reddy', phone: '9000000055', property: '2BHK Apartment', area: '1,100 sq ft', budget: '₹10L–₹12L', location: 'Miyapur', source: 'Website enquiry', stage: 'Interested', received: 'Sep 26, 9:35 AM', notes: ['Looking for modular kitchen + full-home interiors.'], activities: [{ id: 'n1', time: 'Sep 26', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f2', date: addDaysISO(TODAY, 1), time: '11:00', note: 'Share consultation slots', done: false }], consultations: [] },
-    { id: 'vikram-pooja', name: 'Vikram & Pooja', phone: '9000000066', property: '4BHK Villa', area: '3,400 sq ft', budget: '₹35L+', location: 'Financial District', source: 'Referral', stage: 'Proposal', received: 'Sep 24, 3:05 PM', notes: [], activities: [{ id: 'v1', time: 'Sep 24', label: 'Enquiry received' }, { id: 'v2', time: 'Sep 25', label: 'Consultation completed' }, { id: 'v3', time: 'Sep 27', label: 'Stage updated', detail: 'Proposal' }], followUps: [{ id: 'f3', date: addDaysISO(TODAY, 2), time: '15:00', note: 'Proposal follow-up', done: false }], consultations: [] },
+    { id: 'neha', name: 'Neha Reddy', phone: '9000000055', property: '2BHK Apartment', area: '1,100 sq ft', budget: '₹10L–₹12L', location: 'Miyapur', source: 'Website enquiry', stage: 'Interested', received: 'Sep 26, 9:35 AM', notes: ['Looking for modular kitchen + full-home interiors.'], activities: [{ id: 'n1', time: 'Sep 26', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f2', date: '2026-09-30', time: '11:00', note: 'Share consultation slots', done: false }], consultations: [] },
+    { id: 'vikram-pooja', name: 'Vikram & Pooja', phone: '9000000066', property: '4BHK Villa', area: '3,400 sq ft', budget: '₹35L+', location: 'Financial District', source: 'Referral', stage: 'Proposal', received: 'Sep 24, 3:05 PM', notes: [], activities: [{ id: 'v1', time: 'Sep 24', label: 'Enquiry received' }, { id: 'v2', time: 'Sep 25', label: 'Consultation completed' }, { id: 'v3', time: 'Sep 27', label: 'Stage updated', detail: 'Proposal' }], followUps: [{ id: 'f3', date: '2026-10-01', time: '15:00', note: 'Proposal follow-up', done: false }], consultations: [] },
     { id: 'isha', name: 'Isha Narayan', phone: '9000000077', property: '3BHK Apartment', area: '1,620 sq ft', budget: '₹15L–₹18L', location: 'Narsingi', source: 'Website enquiry', stage: 'New', received: 'Today, 10:02 AM', notes: [], activities: [{ id: 'i1', time: '10:02 AM', label: 'Enquiry received' }], followUps: [], consultations: [] },
-    { id: 'karan', name: 'Karan Malhotra', phone: '9000000088', property: '2BHK Apartment', area: '1,280 sq ft', budget: '₹12L–₹16L', location: 'Manikonda', source: 'Instagram', stage: 'Contacted', received: 'Sep 27, 12:12 PM', notes: [], activities: [{ id: 'k1', time: 'Sep 27', label: 'Contact marked', detail: 'No response' }], followUps: [{ id: 'f4', date: TODAY, time: '12:30', note: 'Second attempt', done: false }], consultations: [] },
-    { id: 'meera', name: 'Meera Shah', phone: '9000000099', property: 'Penthouse', area: '2,650 sq ft', budget: '₹28L–₹32L', location: 'Banjara Hills', source: 'Referral', stage: 'Interested', received: 'Sep 25, 5:44 PM', notes: [], activities: [{ id: 'm1', time: 'Sep 25', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f5', date: TODAY, time: '17:00', note: 'Confirm site visit', done: false }], consultations: [] },
+    { id: 'karan', name: 'Karan Malhotra', phone: '9000000088', property: '2BHK Apartment', area: '1,280 sq ft', budget: '₹12L–₹16L', location: 'Manikonda', source: 'Instagram', stage: 'Contacted', received: 'Sep 27, 12:12 PM', notes: [], activities: [{ id: 'k1', time: 'Sep 27', label: 'Contact marked', detail: 'No response' }], followUps: [{ id: 'f4', date: '2026-09-29', time: '12:30', note: 'Second attempt', done: false }], consultations: [] },
+    { id: 'meera', name: 'Meera Shah', phone: '9000000099', property: 'Penthouse', area: '2,650 sq ft', budget: '₹28L–₹32L', location: 'Banjara Hills', source: 'Referral', stage: 'Interested', received: 'Sep 25, 5:44 PM', notes: [], activities: [{ id: 'm1', time: 'Sep 25', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f5', date: '2026-09-29', time: '17:00', note: 'Confirm site visit', done: false }], consultations: [] },
     { id: 'aditya', name: 'Aditya Menon', phone: '9000000100', property: '3BHK Apartment', area: '1,700 sq ft', budget: '₹16L–₹20L', location: 'Kokapet', source: 'Website enquiry', stage: 'Won', received: 'Sep 20, 10:18 AM', notes: [], activities: [{ id: 'ad1', time: 'Sep 20', label: 'Enquiry received' }, { id: 'ad2', time: 'Sep 24', label: 'Stage updated', detail: 'Won' }], followUps: [], consultations: [] },
     { id: 'sana', name: 'Sana Qureshi', phone: '9000000111', property: '2BHK Apartment', area: '1,190 sq ft', budget: '₹11L–₹14L', location: 'Tellapur', source: 'Website enquiry', stage: 'New', received: 'Today, 11:20 AM', notes: [], activities: [{ id: 's1', time: '11:20 AM', label: 'Enquiry received' }], followUps: [], consultations: [] },
-    { id: 'dev', name: 'Dev & Ananya', phone: '9000000122', property: '3BHK Villa', area: '2,350 sq ft', budget: '₹22L–₹26L', location: 'Kompally', source: 'Referral', stage: 'Contacted', received: 'Sep 27, 6:10 PM', notes: [], activities: [{ id: 'dv1', time: 'Sep 27', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f6', date: addDaysISO(TODAY, 3), time: '10:00', note: 'Discuss site visit', done: false }], consultations: [] }
+    { id: 'dev', name: 'Dev & Ananya', phone: '9000000122', property: '3BHK Villa', area: '2,350 sq ft', budget: '₹22L–₹26L', location: 'Kompally', source: 'Referral', stage: 'Contacted', received: 'Sep 27, 6:10 PM', notes: [], activities: [{ id: 'dv1', time: 'Sep 27', label: 'Contact marked', detail: 'Interested' }], followUps: [{ id: 'f6', date: '2026-10-02', time: '10:00', note: 'Discuss site visit', done: false }], consultations: [] }
 ];
 function uid(prefix = 'id') { return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`; }
 function nowLabel() { return new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit' }).format(new Date()); }
@@ -165,7 +165,7 @@ function Page() {
         React.createElement("nav", { className: "bottomNav" }, ['overview', 'leads', 'followups', 'consultations'].map(s => React.createElement("button", { key: s, className: screen === s ? 'active' : '', onClick: () => navigate(s) },
             React.createElement(Icon, { name: s }),
             React.createElement("span", null, labelForScreen(s))))),
-        modal && React.createElement(ModalRouter, { modal: modal, leads: leads, close: () => setModal(null), mutate: mutateLead, setToast: setToast, addLead: (lead) => { setLeads(p => [lead, ...p]); setInteractions(v => v + 1); setToast('Enquiry added'); setModal(null); setScreen('leads'); }, reset: () => { setLeads(seedLeads); setInteractions(0); localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(INTERACTION_KEY); localStorage.removeItem(GUIDE_KEY); setShowGuide(true); setSelectedId(null); setScreen('overview'); setModal(null); setToast('Trial data restored'); } }),
+        modal && React.createElement(ModalRouter, { modal: modal, leads: leads, close: () => setModal(null), mutate: mutateLead, setToast: setToast, addLead: (lead) => { setLeads(p => [lead, ...p]); setInteractions(v => v + 1); setToast('Enquiry added'); setModal(null); setScreen('leads'); }, reset: () => { setLeads(seedLeads); setInteractions(0); localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(INTERACTION_KEY); setSelectedId(null); setScreen('overview'); setToast('Trial data restored'); setModal(null); } }),
         toast && React.createElement("div", { className: "toast" },
             React.createElement(Icon, { name: "check", size: 16 }),
             toast)));
@@ -584,11 +584,11 @@ function ContactModal({ lead, close, save }) { const [out, setOut] = useState('I
     React.createElement("div", { className: "modalActions" },
         React.createElement("button", { className: "primary", onClick: () => save(out, note) }, "Save outcome"),
         React.createElement("button", { className: "ghost", onClick: close }, "Cancel"))); }
-function FollowupModal({ close, save }) { const [date, setDate] = useState(addDaysISO(TODAY, 1)); const [time, setTime] = useState('11:00'); const [note, setNote] = useState(''); return React.createElement(BaseModal, { title: "Schedule follow-up", close: close },
+function FollowupModal({ close, save }) { const [date, setDate] = useState('2026-09-29'); const [time, setTime] = useState('11:00'); const [note, setNote] = useState(''); return React.createElement(BaseModal, { title: "Schedule follow-up", close: close },
     React.createElement("div", { className: "quickOpts" },
-        React.createElement("button", { onClick: () => setDate(addDaysISO(TODAY, 1)) }, "Tomorrow"),
-        React.createElement("button", { onClick: () => setDate(addDaysISO(TODAY, 2)) }, "In 2 days"),
-        React.createElement("button", { onClick: () => setDate(addDaysISO(TODAY, 7)) }, "Next week")),
+        React.createElement("button", { onClick: () => setDate('2026-09-29') }, "Tomorrow"),
+        React.createElement("button", { onClick: () => setDate('2026-09-30') }, "In 2 days"),
+        React.createElement("button", { onClick: () => setDate('2026-10-05') }, "Next week")),
     React.createElement("div", { className: "formRow" },
         React.createElement("label", { className: "field" },
             React.createElement("span", null, "Date"),
@@ -602,7 +602,7 @@ function FollowupModal({ close, save }) { const [date, setDate] = useState(addDa
     React.createElement("div", { className: "modalActions" },
         React.createElement("button", { className: "primary", disabled: !date || !time, onClick: () => save(date, time, note) }, "Schedule follow-up"),
         React.createElement("button", { className: "ghost", onClick: close }, "Cancel"))); }
-function ConsultationModal({ close, save }) { const [date, setDate] = useState(addDaysISO(TODAY, 1)); const [time, setTime] = useState('15:00'); const [mode, setMode] = useState('Studio'); const [note, setNote] = useState(''); return React.createElement(BaseModal, { title: "Book consultation", close: close },
+function ConsultationModal({ close, save }) { const [date, setDate] = useState('2026-09-29'); const [time, setTime] = useState('15:00'); const [mode, setMode] = useState('Studio'); const [note, setNote] = useState(''); return React.createElement(BaseModal, { title: "Book consultation", close: close },
     React.createElement("div", { className: "formRow" },
         React.createElement("label", { className: "field" },
             React.createElement("span", null, "Date"),
