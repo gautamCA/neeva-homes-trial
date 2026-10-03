@@ -17,6 +17,6 @@ An interactive browser-only demonstration prepared for Neeva Homes by Silicon So
 
 This is not a connected Neeva Homes production service. No real customer data, background automation, WhatsApp delivery, shared team synchronization, live integrations or actual proposals are transmitted. Trial changes are stored only in the visitor's browser. Production scope, integrations, access control, pricing and rollout need separate agreement.
 
-Client preview: https://gautamca.github.io/ojas-interiors-trial/
+Client preview: https://gautamca.github.io/neeva-homes-trial/
 
 Built by Silicon Soul · https://siliconsoul.continuumarc.tech
