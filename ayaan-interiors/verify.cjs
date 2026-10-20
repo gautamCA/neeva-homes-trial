@@ -2,8 +2,8 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const html=fs.readFileSync(fs.existsSync(__dirname+'/dist/index.html')?__dirname+'/dist/index.html':__dirname+'/index.html','utf8');
 const code=html.split('<script>')[1].split('</script>')[0];
 new vm.Script(code);
-let saved=null;
-const ctx=vm.createContext({Intl,Date,Math,console,localStorage:{getItem:k=>k.includes('guide')?'0':saved,setItem:(k,v)=>{if(!k.includes('guide'))saved=v}}});
+let saved=null,exportedBlob=null;
+const ctx=vm.createContext({Intl,Date,Math,console,Blob,URL:{createObjectURL:b=>{exportedBlob=b;return 'blob:test'},revokeObjectURL:()=>{}},setTimeout:fn=>fn(),document:{createElement:()=>({click:()=>{}})},localStorage:{getItem:k=>k.includes('guide')?'0':saved,setItem:(k,v)=>{if(!k.includes('guide'))saved=v}}});
 vm.runInContext(code.slice(0,code.indexOf("document.addEventListener('click'")),ctx);
 const run=s=>vm.runInContext(s,ctx);
 assert.equal(run('seed().every(validRecord)'),true);
@@ -35,3 +35,13 @@ saved=JSON.stringify({version:'1.0.0',records:[rows[0],rows[0]]});assert.equal(r
 saved=JSON.stringify({version:'other',records:rows});assert.equal(run('load().length'),7);
 saved=JSON.stringify({version:'1.0.0',records:[{...rows[5],follow:{date:'2026-10-20',time:'10:00',note:'Stale'}}]});assert.equal(run('load()[0].follow'),null);
 console.log('PASS: syntax, sample model, line-item rounding, discounts/tax, date boundaries, validation, terminal reminders, HTML/CSV escaping, long notes, storage recovery, duplicate IDs and version handling.');
+
+(async()=>{
+run('notify=()=>{};records=seed();exportCSV()');
+const csv=await exportedBlob.text();
+assert.equal(csv.trim().split('\r\n').length,8);
+assert.ok(csv.includes('"Quotation LKR (sample)"'));
+assert.ok(csv.includes('"Senanayake family"'));
+assert.ok(csv.includes('"5850000"'));
+console.log('PASS: actual CSV generator bytes, columns, row count and saved quotation amounts.');
+})().catch(e=>{console.error(e);process.exitCode=1});
