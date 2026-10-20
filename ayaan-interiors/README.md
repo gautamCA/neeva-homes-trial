@@ -29,7 +29,7 @@ A live implementation and any WhatsApp Business API connection require a separat
 
 Run `node verify.cjs` alongside `index.html` (or from the local project with `dist/index.html`). Checks cover sample validity; project quotation starters; rounding, discount and tax arithmetic; leap-day/year boundaries; invalid records/quotes; terminal reminders; HTML and CSV escaping; long notes; corrupt storage; duplicate IDs; and schema version handling.
 
-Browser QA exercised manual capture, assignment, consultation scheduling/completion, quotation editing and saving, generated print content, manual share status, copyable reply text, follow-up agenda, list search/board, terminal reminder cleanup, reload persistence and reset/guide restoration. The quotation editor was tested at 390px width without horizontal overflow. CSV download was triggered successfully; the browser download bridge did not expose its bytes for a separate file inspection.
+Browser QA exercised manual capture, assignment, consultation scheduling/completion, quotation editing and saving, generated print content, manual share status, copyable reply text, follow-up agenda, list search/board, terminal reminder cleanup, reload persistence and reset/guide restoration. The quotation editor was tested at 390px width without horizontal overflow. CSV download was triggered successfully in-browser. A separate check captures the actual CSV generator bytes and verifies headers, row counts and saved quotation amounts. The browser download bridge did not expose its downloaded file bytes.
 
 Public process reference: https://ayaaninterior.com/services — discovery call, site visit, design proposal and quotation. This is an independently prepared concept, not a claim of endorsement.
 
